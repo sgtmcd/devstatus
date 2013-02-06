@@ -1,0 +1,14 @@
+%form.form-inline{:action => "/home/index", :method => "post"}
+  %input.input-small#username{:name => "username", :type => 'text', :placeholder => 'username', :value => @username}
+  %input.input-small{:name => "password", :type=>'password', :placeholder => 'password', :value => @password}
+  %input#notice{:name => "notice", :type => 'text', :placeholder => 'notice'}
+  %button.btn{:type => 'submit'} Post
+  - if @username
+    - item = feeds_for(@username).try(:first)
+    -if item
+      %dl.dl-horizontal
+        %dt
+          = "#{@username.titleize}: "
+        #dd
+          = DateTime.parse(item['created_at']).strftime("%m/%d %I:%M%p")
+          = item['text']

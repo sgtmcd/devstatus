@@ -1,0 +1,21 @@
+.row-fluid
+  - @names.each do |name|
+    - next if name == @username
+    .span2
+      %h3
+        %a{:href => user_for(name)["statusnet_profile_url"]}
+          %image.img-rounded{:src => user_for(name)["profile_image_url"]}
+          = name.split(' ')[0].titleize
+      %ul.statuses
+        - feeds_for(name).slice(0,6).each_with_index do |item, index|
+          - unless item["text"].include? 'started following'
+            - if index == 0
+              %li.well.well-small
+                %div
+                  %small
+                    = DateTime.parse(item['created_at']).strftime("%m/%d %I:%M%p")
+                = auto_link(item['text'])
+            - else
+              %li
+                %small
+                  = auto_link(item['text'])
